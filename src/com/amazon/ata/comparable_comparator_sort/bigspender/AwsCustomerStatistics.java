@@ -3,6 +3,7 @@ package com.amazon.ata.comparable_comparator_sort.bigspender;
 import com.amazon.ata.comparable_comparator_sort.bigspender.dao.AwsServiceInvoiceDao;
 import com.amazon.ata.comparable_comparator_sort.bigspender.types.CustomerServiceSpend;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,7 +30,10 @@ public class AwsCustomerStatistics {
      */
     public List<CustomerServiceSpend> getTopServiceSpendForEachCustomer() {
         // PARTICIPANTS: Implement according to Javadoc and README
-        return null;
+        List<CustomerServiceSpend> highestSpendsPerCustomer = this.awsServiceInvoiceDao.getHighestServiceSpendsForEachCustomer();
+        Collections.sort(highestSpendsPerCustomer);
+
+        return highestSpendsPerCustomer;
     }
 
     /**
