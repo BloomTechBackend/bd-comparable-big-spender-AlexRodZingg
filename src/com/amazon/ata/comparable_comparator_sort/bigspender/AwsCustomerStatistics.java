@@ -1,8 +1,9 @@
 package com.amazon.ata.comparable_comparator_sort.bigspender;
 
 import com.amazon.ata.comparable_comparator_sort.bigspender.dao.AwsServiceInvoiceDao;
-import com.amazon.ata.comparable_comparator_sort.bigspender.types.CustomerServiceSpend;
+import com.amazon.ata.comparable_comparator_sort.bigspender.types.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,6 +47,23 @@ public class AwsCustomerStatistics {
      */
     public List<CustomerServiceSpend> getTopItemizedSpends() {
         // PARTICIPANTS: Implement according to Javadoc and README
-        return null;
+        List<CustomerTotalSpend> customerTotalSpends = this.awsServiceInvoiceDao.getAllServiceSpends();
+
+        Collections.sort(customerTotalSpends, new CustomerTotalSpendComparator().reversed());
+        // Collections.reverse(customerTotalSpends);
+
+        List<CustomerServiceSpend> customerServiceSpends = new ArrayList<>();
+        for (CustomerTotalSpend cts : customerTotalSpends) {
+            List<CustomerServiceSpend> customerList = new ArrayList<>();
+            for (ServiceSpend css : cts.getServiceSpends()) {
+                customerList.add(new CustomerServiceSpend(cts.getCustomer(), css));
+            }
+            Collections.sort(customerList, new CustomerServiceSpendComparator().reversed());
+            customerServiceSpends.addAll(customerList);
+        }
+
+
+
+        return customerServiceSpends;
     }
 }
